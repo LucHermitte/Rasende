@@ -1,0 +1,42 @@
+I- algo
+I.1. recherche de la meilleure solution
+-> en largeur, et pas en profondeur
+
+II- réalisation
+1. Définition du plateau
+-> stockage des murs
+-> affichage en ASCII art
+-> accès aux murs
+-> définition depuis procédure de lecture
+
+2. Définition du but
+-> notion de coordonnées {l, c}
+
+3. Définition d'un robot
+-> notion de coordonnées {l, c}
+-> x 4
+-> peut être déplacé
+-> but atteint ?
+--> hash
+-> ensemble de robots, itérable
+
+4. Définition d'un état du jeu
+-> (plateau +) position des 4 robots
+-> moyen de vérifier s'il y a un robot à une position donnée
+-> moyen d'accéder à chacun des robots
+--> moyen d'obtenir le hash de l'état courant
+
+5. Définition d'une partie
+-> plateau
+-> + but
+-> + état de départ
+-> lecture depuis fichier
+-> sortie vers flux
+
+6. Définition de l'algo d'exploration
+-> états déjà vus
+-> états à voir
+-> Noeud = { état + profondeur + état précedent}
+-> comment obtenir les états explorable depuis un état
+-> liste des prochains états à explorer
+-> ne pas tenter d'explorer les états déjà vus ou qui le seront

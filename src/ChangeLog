@@ -1,0 +1,6 @@
+Version 1.1
+        Seen states are stored in a genuine O(1) structure. However, all the
+        states that precede other states are not stored in this O(1) structure
+        as it would consume 8Gb.
+Version 1.2
+        Compilation chain changed from autotools to CMake

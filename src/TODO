@@ -1,0 +1,40 @@
+- Try various algorithms
+  - no discarding, just avoid where we came from
+  - post-discarding: sort+uniq (with/without avoidance of origin)
+  - real O(1) discarding (no hash-table, but (16x16)^4 bools table
+  - discarding + avoid origin(s)
+
+- support multiple algorithms (for benchmark)
+  -> rethink policies/CRTP-mixin-layers
+
+- benchmarks execution times
+  -> keep all algorithms
+  - test bitset board vs bool table when using incremental movement
+  - CC vs g++-4 vs g++-3 vs VC
+
+- go concurrent to take advantage of multiple core/processors (when available)
+
+- (mathematical) analysis of the complexity of the problem
+
+- take advantage of graphic cards processors
+
+- find better hash functions
+
+- animated outputs
+
+
+- IA player 
+  -> use a recursive heuristic
+  -> one minute once a max is given
+  -> only one "target"
+
+- autotool organization
+  - UT
+  - mazes
+  - .o, .exe dir
+
+- save current analysis state on sigstop in a file
+  - load the file and:
+    - check the start positions are compatible
+    - the goal is matched by one of the recorded position
+    - continue the exploration

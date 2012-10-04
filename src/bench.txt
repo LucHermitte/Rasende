@@ -1,0 +1,33 @@
+----------------------------------------------------------------------
+Solaris   = SunOS atvdev 5.10 Generic_138888-02 sun4u sparc SUNW,Sun-Fire-V240
+g++/sol   = gcc version 3.4.6
+SunStudio = Sun C++ 5.9 SunOS_sparc 2007/05/03, with stlport 4
+
+test0 = "Breadth-first, hash, paths precomputed"
+test1 = "Breadth-first, hash, paths computed on the fly (bitset)"
+
+----------------------------------------------------------------------
+g++ 3.4.6 under solaris:
+test   description                         absolute   operations   ratio with
+number                                     time       per second   test0
+
+ 0     Breadth-first, hash, precomputed     5.09 sec    0.00 M     1.00
+ 1     Breadth-first, hash, iterative move  4.80 sec    0.00 M     0.94
+
+Total absolute time for razende for ../mazes/rr-100414.txt: 9.89 sec
+
+razende for ../mazes/rr-100414.txt Penalty: 0.94
+
+----------------------------------------------------------------------
+SunStudio 5.9 under Solaris
+test   description                         absolute   operations   ratio with
+number                                     time       per second   test0
+
+ 0     Breadth-first, hash, precomputed     7.09 sec    0.00 M     1.00
+ 1     Breadth-first, hash, iterative move  7.13 sec    0.00 M     1.01
+
+Total absolute time for razende for ../mazes/rr-100414.txt: 14.22 sec
+
+razende for ../mazes/rr-100414.txt Penalty: 1.01
+
+----------------------------------------------------------------------

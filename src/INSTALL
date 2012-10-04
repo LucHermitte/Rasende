@@ -1,0 +1,56 @@
+How-to install Rasende-Roboter-Solver ?
+
+======================================================================
+Install from binaries:
+This options is not available yet.
+
+======================================================================
+Install from the sources:
+
+Requirements:
+- first, a git client to fetch the sources
+- then you need to obtain the sources from: http://github.com/LucHermitte/Rasende
+  -> cd /some/path
+  -> mkdir rasende
+  -> git clone git@github.com:LucHermitte/Rasende.git repository 
+- CMake (http://www.cmake.org) v2.8.4+ (I haven't tested with previous
+  versions)
+- a C++ compiler
+  - with hash_map (from SGI, STLPort, from old GCC or VC++ versions), or C++11
+    std::unordered_map<>
+  - in case you are using GCC, you have to be sure to have a version > 4.6, or
+    to fix bitset implementation according to this bug report:
+    http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45713
+
+Once all requirements are met, you're ready to go on.
+
+Makefiles generation:
+As usually with CMake, it's highly recommended to build the project outside of
+the sources directory.
+Let's say you have put the source code in: /some/path/rasende/repository/
+You can put the build directory in: /some/path/rasende/build/, or if you use
+my local_vimrc plugin and configuration, in /some/path/rasende/build-r/.
+-> cd /some/path/rasende
+-> mkdir build-r
+-> cd build-r
+-> cmake ../repository
+
+You may want to set the compilation mode to Release, or set the install
+directory to something different from /usr/local/. In that case, use ccmake
+(or cmake-gui) instead of cmake.
+Note: It would be the same under windows, just use \ instead of / for your
+paths.
+
+The compilation:
+Just continue with:
+-> make
+and may be "make install" if you want a clean install of this pet project.
+
+
+If you want to obtain the doxygen documentation, you will require doxygen
+(http://www.doxygen.org), and dot. The HTML pages are generated with 
+-> make doc
+Then open /some/path/rasende/build-r/dox/html/index.html
+
+
+And now enjoy!
