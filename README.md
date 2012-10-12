@@ -11,7 +11,7 @@ you can have a look at:
 The solver looks, for each robot, for the best solution that brings that
 robot to the goal.
 
-#How to use the solver:
+##How to use the solver:
 ----------------------
 The game takes as argument a maze definition in ASCII art where:
 * `|` symbolizes vertical walls
@@ -25,7 +25,7 @@ Note: No robot may be on the goal with the current interface specification.
 When executed without any argument, the program will echo an empty maze.
 
 
-#How the solver works:
+##How the solver works:
 ---------------------
 The solver does a breadth-first exploration of all possible positions
 for the robots, and prune states already explored, and that are in the list of
@@ -38,7 +38,7 @@ given is one optimal solution (actually one solution per robot).
 See the «TODO» document regarding the various (linear) optimizations performed.
 
 
-#Current performances:
+##Current performances:
 ---------------------
 Under a 32-bit Windows XP PC with 2GB RAM, the solver can explore puzzles that
 need up to 17-19 moves. The actual limitation comes from the memory required to
@@ -48,7 +48,7 @@ The best algorithm (not implemented yet) that I can think about would require
 (16\*16)^4 bytes (4GB) + up to several GB for the next states to explore.
 
 
-#Other links
+##Other links
 ---------------------
 There exist many places where it is possible to play online. You can check the
 links from Tric Trac, BGG, or even the following one:
@@ -61,7 +61,7 @@ BTW, there also exist several other solvers. Here is a few I came to notice:
   complete game that embeds a solver that gives an optimal solution.
 
 
-#License
+##License
 ---------------------
 Rasende Roboter Solver Source Code is free software: you can redistribute it
 and/or modify it under the terms of the GNU General Public License as published
