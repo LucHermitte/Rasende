@@ -59,7 +59,8 @@ if(MSVC)
   list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS_DEBUG)
 endif()
 
-CONFIGURE_FILE( ${SRC_INC}/config.h.cmakein ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+# Configure file where detected options are stored.
+CONFIGURE_FILE(${SRC_INC}/config.h.cmakein ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 #======================================================================
@@ -82,69 +83,6 @@ add_subdirectory(src)
     # include(CTest)
     # add_subdirectory(tests)
 # endif(RASENDE_BUILD_TESTING)
-
-#======================================================================
-# CPack
-OPTION(RASENDE_USE_CPACK "Generate installer using CPack" OFF)
-MARK_AS_ADVANCED(RASENDE_USE_CPACK)
-
-# variables also used for doxygen
-SET(RASENDE_PACKAGE_NAME "Rasende-Roboter-Solver" CACHE STRING "Package name")
-SET(RASENDE_PACKAGE_DESCRIPTION_SUMMARY "Solver for Rasende Roboter puzzles")
-SET(RASENDE_PACKAGE_VENDOR "Luc Hermitte")
-
-IF(RASENDE_USE_CPACK)
-    # The following components are regex's to match anywhere (unless anchored)
-    # in absolute path + filename to find files or directories to be excluded
-    # from source tarball.
-    # set(CPACK_SOURCE_IGNORE_FILES
-        # "~$"
-        # "\\.git$"
-        # "^${PROJECT_SOURCE_DIR}.*/.git/"
-        # "\\.swp$"
-        # "\\.swo$"
-        # )
-    #message("CPACK_SOURCE_IGNORE_FILES = ${CPACK_SOURCE_IGNORE_FILES}")
-
-
-
-# FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/AllVariables.txt "")
-# GET_CMAKE_PROPERTY(res VARIABLES)
-# FOREACH(var ${res})
-  # FILE(APPEND ${CMAKE_CURRENT_BINARY_DIR}/AllVariables.txt 
-             # "V:${var} \"${${var}}\"\n")
-# ENDFOREACH(var ${res})
-# GET_CMAKE_PROPERTY(res CACHE_VARIABLES)
-# FOREACH(var ${res})
-  # FILE(APPEND ${CMAKE_CURRENT_BINARY_DIR}/AllVariables.txt 
-      # "C:${var} \"${${var}}\"\n")
-# ENDFOREACH(var ${res})
-
-
-    INCLUDE(InstallRequiredSystemLibraries)
-    
-    SET(CPACK_PACKAGE_NAME "${RASENDE_PACKAGE_NAME}" CACHE STRING "Package name")
-    SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${RASENDE_PACKAGE_DESCRIPTION_SUMMARY}")
-    SET(CPACK_PACKAGE_VENDOR "${RASENDE_PACKAGE_VENDOR}")
-    MARK_AS_ADVANCED(CPACK_PACKAGE_NAME)
-    MARK_AS_ADVANCED(CPACK_PACKAGE_DESCRIPTION_SUMMARY)
-    
-    SET(CPACK_PACKAGE_VERSION  "${RASENDE_VERSION_STRING}")
-    SET(CPACK_PACKAGE_VERSION_MAJOR "${RASENDE_VERSION_MAJOR}")
-    SET(CPACK_PACKAGE_VERSION_MINOR "${RASENDE_VERSION_MINOR}")
-    SET(CPACK_PACKAGE_VERSION_PATCH "${RASENDE_VERSION_PATCH}")
-    SET(CPACK_PACKAGE_CONTACT "luc.hermitte {at} gmail.com" CACHE STRING  "Luc Hermitte contact email")
-    # SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../Description.txt")
-    
-    # SET(CPACK_PACKAGE_INSTALL_DIRECTORY
-        # "RASENDE-Familles-${RASENDE_VERSION_MAJOR}.${RASENDE_VERSION_MINOR}")
-    
-    # SET(CPACK_RESOURCE_FILE_LICENSE
-        # "${CMAKE_CURRENT_SOURCE_DIR}/../../Copyright/RouilleCopyright.txt")
-    
-    INCLUDE(CPack)
-
-ENDIF(RASENDE_USE_CPACK)
 
 #======================================================================
 # Doxygen
@@ -215,10 +153,79 @@ else(DOXYGEN_FOUND)
         "Doxygen is needed to build the documentation. Please install it correctly")
 endif(DOXYGEN_FOUND)
 
+#======================================================================
+# CPack
+OPTION(RASENDE_USE_CPACK "Generate installer using CPack" OFF)
+MARK_AS_ADVANCED(RASENDE_USE_CPACK)
+
+# variables also used for doxygen
+SET(RASENDE_PACKAGE_NAME "Rasende-Roboter-Solver" CACHE STRING "Package name")
+SET(RASENDE_PACKAGE_DESCRIPTION_SUMMARY "Solver for Rasende Roboter puzzles")
+SET(RASENDE_PACKAGE_VENDOR "Luc Hermitte")
+
+IF(RASENDE_USE_CPACK)
+    # The following components are regex's to match anywhere (unless anchored)
+    # in absolute path + filename to find files or directories to be excluded
+    # from source tarball.
+    # set(CPACK_SOURCE_IGNORE_FILES
+        # "~$"
+        # "\\.git$"
+        # "^${PROJECT_SOURCE_DIR}.*/.git/"
+        # "\\.swp$"
+        # "\\.swo$"
+        # )
+    #message("CPACK_SOURCE_IGNORE_FILES = ${CPACK_SOURCE_IGNORE_FILES}")
+
+
+
+# FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/AllVariables.txt "")
+# GET_CMAKE_PROPERTY(res VARIABLES)
+# FOREACH(var ${res})
+  # FILE(APPEND ${CMAKE_CURRENT_BINARY_DIR}/AllVariables.txt 
+             # "V:${var} \"${${var}}\"\n")
+# ENDFOREACH(var ${res})
+# GET_CMAKE_PROPERTY(res CACHE_VARIABLES)
+# FOREACH(var ${res})
+  # FILE(APPEND ${CMAKE_CURRENT_BINARY_DIR}/AllVariables.txt 
+      # "C:${var} \"${${var}}\"\n")
+# ENDFOREACH(var ${res})
+
+
+    INCLUDE(InstallRequiredSystemLibraries)
+    
+    SET(CPACK_PACKAGE_NAME "${RASENDE_PACKAGE_NAME}" CACHE STRING "Package name")
+    SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${RASENDE_PACKAGE_DESCRIPTION_SUMMARY}")
+    SET(CPACK_PACKAGE_VENDOR "${RASENDE_PACKAGE_VENDOR}")
+    MARK_AS_ADVANCED(CPACK_PACKAGE_NAME)
+    MARK_AS_ADVANCED(CPACK_PACKAGE_DESCRIPTION_SUMMARY)
+    
+    SET(CPACK_PACKAGE_VERSION  "${RASENDE_VERSION_STRING}")
+    SET(CPACK_PACKAGE_VERSION_MAJOR "${RASENDE_VERSION_MAJOR}")
+    SET(CPACK_PACKAGE_VERSION_MINOR "${RASENDE_VERSION_MINOR}")
+    SET(CPACK_PACKAGE_VERSION_PATCH "${RASENDE_VERSION_PATCH}")
+    SET(CPACK_PACKAGE_CONTACT "luc.hermitte {at} gmail.com" CACHE STRING  "Luc Hermitte contact email")
+    SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+    
+    # SET(CPACK_PACKAGE_INSTALL_DIRECTORY
+        # "RASENDE-Familles-${RASENDE_VERSION_MAJOR}.${RASENDE_VERSION_MINOR}")
+    
+    SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/src/COPYING")
+
+    # Cygwin specific stuff
+    find_package(Cygwin)
+    IF (CYGWIN)
+        SET(CPACK_CYGWIN_PATCH_FILE "${CMAKE_CURRENT_SOURCE_DIR}/useless-but-required-by-cmake-patch-file-for-cygwin")
+        SET(CPACK_CYGWIN_BUILD_SCRIPT
+            "${CMAKE_CURRENT_SOURCE_DIR}/useless-but-required-by-cmake-build-script-for-cygwin")
+    ENDIF(CYGWIN)
+    
+    INCLUDE(CPack)
+
+ENDIF(RASENDE_USE_CPACK)
+
 
 #======================================================================
 # How-to build with cmake
-# open OSGeo windows, then:
 #     cmake --build . --config Release --target clean
 # Clean with:
 #     cmake --build . --config Release --target clean
@@ -228,4 +235,7 @@ endif(DOXYGEN_FOUND)
 # tests
 #     cmake --build . --config Release
 #     ctest .
+# packaging the source code
+#     cmake .
+#     make package_source
 
