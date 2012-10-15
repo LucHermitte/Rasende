@@ -29,5 +29,5 @@ IF (NOT DEFINED HAS_BITSET_0xffffffff)
 ENDIF(NOT DEFINED HAS_BITSET_0xffffffff)
 
 IF (NOT HAS_BITSET_0xffffffff)
-    MESSAGE(FATAL_ERROR "Your implementation of std::bitset is bugged. See GCC Bug libstdc++/45713: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45713")
+    MESSAGE(FATAL_ERROR "Your implementation of std::bitset is bugged. You can either upgrade GCC to version 4.6, or compile in 64bits, or bit std::bitset code. See GCC Bug libstdc++/45713: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45713")
 ENDIF(NOT HAS_BITSET_0xffffffff)

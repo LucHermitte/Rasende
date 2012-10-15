@@ -42,6 +42,8 @@ set(INPUT_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
 # Using: http://pageant.ghulbus.eu/?p=664
 # set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake")
 include(CMake/CheckCXX11Features.cmake)
+# Check how hash maps/unordered maps
+include(CMake/CheckHashMap.cmake)
 # Check a blocking bug from GNU libstdc++ implementation of std::bitset
 include(CMake/CheckBitSetMaxSize.cmake)
 
