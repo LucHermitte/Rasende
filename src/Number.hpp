@@ -21,6 +21,9 @@
 #define RR_NUMBER_HPP__
 
 namespace rr {
+    /**\addtogroup gCore
+     * @{
+     */
     /**
      * Strongly typed numbers.
      * This hacks is an experiment at strongly typed numbers. This way
@@ -82,9 +85,13 @@ namespace rr {
 	    return Number<unit,type>(lhs.v*rhs.v);
 	}
 
+    /** Helper type to define \c Line type. */
     struct Line_t { };
+    /** Helper type to define \c Column type. */
     struct Column_t { };
+    /** Strongly typed line number type. */
     typedef Number<Line_t, unsigned char> Line;
+    /** Strongly typed column number type. */
     typedef Number<Column_t, unsigned char> Column;
 
     inline
@@ -92,6 +99,7 @@ namespace rr {
     inline
     size_t operator*(Column c, size_t s) { return c.v * s; }
 
+    //@}
 } // namespace rr
 
 #endif // RR_NUMBER_HPP__

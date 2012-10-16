@@ -1,0 +1,12 @@
+/**\defgroup gCore Core definitions
+ * General definitions.
+ * These definitions are related to the modelisation of a game, the board, the
+ * robots, and so on. Solution exploration are defined in the \ref gAlgorithm
+ * "Solution searching algorithms" module.
+ */
+
+/**\defgroup gAlgorithm Solution searching algorithms
+ * Solution searching algorithms.
+ * Here are all the various searching algorithms tested and benchmarked.
+ */
+// vim: ft=cpp:

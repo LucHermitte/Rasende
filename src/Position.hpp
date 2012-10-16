@@ -24,8 +24,13 @@
 #include "Number.hpp"
 
 namespace rr {
-    /** Position on the \c Board. 
-     * Semantics: Regular type
+    /**\addtogroup gCore
+     * @{
+     */
+    /** %Position on the \c Board. 
+     * A position is a pair of coordinates: line + colunm.
+     *
+     * Semantics: <em>Regular type</em>.
      */
     struct Position
     {
@@ -53,6 +58,7 @@ namespace rr {
         return os << int(p.l.v) << "," << int(p.c.v);
     }
 
+    //@}
 } // namespace rr
 
 #endif // RR_POSITION_HPP__

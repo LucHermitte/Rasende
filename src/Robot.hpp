@@ -25,6 +25,9 @@
 
 namespace rr
 { 
+    /**\addtogroup gCore
+     * @{
+     */
     struct Goal;
     struct Robot ;
     bool operator==(Robot const& lhs, Robot const& rhs) ;
@@ -33,7 +36,8 @@ namespace rr
     bool operator==(Goal const& lhs, Robot const& rhs) ;
     std::ostream & operator<<(std::ostream & os, Robot const& r) ;
 
-    /** Robot definition.
+    /** %Robot definition.
+     * \note Comparing robots only consider their position, not their id.
      */
     struct Robot {
         Robot() {}
@@ -47,75 +51,84 @@ namespace rr
             assert(n_ < MAX__);
             return names(n_+1);
         }
+        /// Obtains a robot id (C++ enum) from its designation letter.
         static names char2robot(char c) ;
+        /// Obtains a robot designation letter from its id (C++ enum).
         static char toString(names n) ;
 
+        /// Line accessor.
         Line            l   () const { return p.l;}
+        /// Column accessor.
         Column          c   () const { return p.c;}
+        /// Position accessor.
         Position const& pos () const { return p;}
+        /** Hash code associated to its position.
+         * As the board is expected to be 16x16, the hash returned in 16 times
+         * the line number plus the column number. 
+         */
         size_t          hash() const { return l()*16 + c(); }
 
     private:
         Position p;
         friend bool rr::operator==(Robot const& lhs, Robot const& rhs)
 #if   !defined(_MSC_VER)
-		{
+        {
             return lhs.p == rhs.p;
         }
 #else
-			;
+        ;
 #endif
         friend bool rr::operator!=(Robot const& lhs, Robot const& rhs)
 #if   !defined(_MSC_VER)
-		{
+        {
             return lhs.p != rhs.p;
         }
 #else
-			;
+        ;
 #endif
         friend bool rr::operator<(Robot const& lhs, Robot const& rhs)
 #if   !defined(_MSC_VER)
-		{
+        {
             return lhs.p < rhs.p;
         }
 #else
-			;
+        ;
 #endif
         friend bool rr::operator==(Goal const& lhs, Robot const& rhs) ;
         friend std::ostream & rr::operator<<(std::ostream & os, Robot const& r)
 #if   !defined(_MSC_VER)
-		{
+        {
             return os << r.p;
         }
 #else
-			;
+        ;
 #endif
     };
     inline
-    Robot::names& operator++(Robot::names & n_) {
-        n_ = Robot::next(n_);
-        return n_;
-    }
+        Robot::names& operator++(Robot::names & n_) {
+            n_ = Robot::next(n_);
+            return n_;
+        }
 #if defined(_MSC_VER)
-	inline
-    bool rr::operator==(Robot const& lhs, Robot const& rhs) {
-        return lhs.p == rhs.p;
-    }
-	inline
-    bool rr::operator!=(Robot const& lhs, Robot const& rhs) {
-        return lhs.p != rhs.p;
-    }
-	inline
-    bool rr::operator<(Robot const& lhs, Robot const& rhs) {
-        return lhs.p < rhs.p;
-    }
-	inline
-    std::ostream & rr::operator<<(std::ostream & os, Robot const& r) {
-        return os << r.p;
-    }
+    inline
+        bool rr::operator==(Robot const& lhs, Robot const& rhs) {
+            return lhs.p == rhs.p;
+        }
+    inline
+        bool rr::operator!=(Robot const& lhs, Robot const& rhs) {
+            return lhs.p != rhs.p;
+        }
+    inline
+        bool rr::operator<(Robot const& lhs, Robot const& rhs) {
+            return lhs.p < rhs.p;
+        }
+    inline
+        std::ostream & rr::operator<<(std::ostream & os, Robot const& r) {
+            return os << r.p;
+        }
 #endif
 
-    /** Goal where robot must go.
+    /** %Goal where robots must go.
      */
     struct Goal
     {
@@ -126,9 +139,11 @@ namespace rr
         friend bool rr::operator==(Goal const& lhs, Robot const& rhs) ;
     };
     inline
-    bool operator==(Goal const& lhs, Robot const& rhs) {
-        return ! (lhs.p != rhs.p);
-    }
+        bool operator==(Goal const& lhs, Robot const& rhs) {
+            return ! (lhs.p != rhs.p);
+        }
+
+    //@}
 } // rr namespace 
 
 

@@ -31,19 +31,38 @@ namespace rr {
     struct Game;
 }
 
+/**\addtogroup gCore
+ *@{
+ */
 std::istream & operator>>(std::istream& is, rr::Game & g) ;
 std::ostream & operator<<(std::ostream& os, rr::Game const& g) ;
+//@}
 
 namespace rr {
+
+    /**\addtogroup gCore
+     *@{
+     */
 
 /*===========================================================================*/
 /*=================================[ Board ]=================================*/
 /*===========================================================================*/
+    /** Describes a state of the game.
+     * A state of the game is defined by the position of all 4 robots.
+     * Given a board of 16x16 tiles, and a few unaccessible tiles at the
+     * center of the board, there is at most \f$256^4\f$ possible states.
+     * (252*251*250*249 to be precise).
+     */
     struct State {
         Robot m_robots[4];
+        /// Accessor to each \c Robot state (RO).
         Robot const& operator[](Robot::names r) const { return m_robots[r]; }
+        /// Accessor to each \c Robot state (RW).
         Robot      & operator[](Robot::names r)       { return m_robots[r]; }
 
+        /** Tells whether there is a \c Robot (any which) at the given
+         * position.
+         */
         bool hasRobot(Line l, Column c) const {
             const Robot p(l,c);
             for (Robot::names r=Robot::names(0) ; r!=Robot::MAX__; ++r)
@@ -53,16 +72,29 @@ namespace rr {
         }
     };
 
-    inline
-    size_t hash(Robot const& r) {
-	return r.l()*16+r.c();
+    /** Hash code associated to a \c Robot's position.
+     * As the board is expected to be 16x16, the hash returned in 16 times
+     * the line number plus the column number. 
+     * \post at most the result value is 255.
+     */
+    inline size_t hash(Robot const& r) {
+        return r.l()*16+r.c();
     }
-    inline
-    size_t hash(State const& p) {
+    /** Hash code associated to a game \c State.
+     * The hash is computed to be the juxtaposition of the \c hash of each
+     * Robot.
+     */
+    inline size_t hash(State const& p) {
         return ((hash(p[Robot::Rouge])*256+hash(p[Robot::Bleu]))*256+hash(p[Robot::Vert]))*256+hash(p[Robot::Gris]);
     }
 
-    /** Initial Game state (Board+Goal+initial Robots State).
+    /** Initial %game state.
+     * - Board definition,
+     * - Goal position,
+     * - initial Robots States.
+     *
+     * This class also contains all the mecanics to read a game description
+     * file, and tell where the walls are.
      */
     struct Game {
         void putVerticalWall(Line l, Column c) ;
@@ -89,14 +121,19 @@ namespace rr {
         friend std::ostream & ::operator<<(std::ostream& os, Game const& g) ;
     };
 
+    //@}
 } // namespace 
 
 #if defined(HAS_STDEXT_HASH_SET)
 namespace stdext {
+    /**\ingroup gCore
+     * Helper function required by the old stdext hash set.
+     */
     inline std::size_t hash_value(State const& p) {
         return rr::hash(p);
     }
 }
 #endif
+
 
 #endif // RR_BOARD_HPP__
