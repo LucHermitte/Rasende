@@ -1,17 +1,16 @@
 "=============================================================================
-" $Id$
 " File:         _vimrc_local_global_defs.vim {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:https://github.com/LucHermitte/Rasende>
 " Version:      001
 " Created:      26th Sep 2012
-" Last Update:  $Date$
+" Last Update:  30th Oct 2018
 "------------------------------------------------------------------------
 " Description:
 "       Contains the global definitions that need to exist before defining
 "       buffer-local definitions.
 "       Meant to be sourced from _vimrc_local.vim
-" 
+"
 "------------------------------------------------------------------------
 " }}}1
 "=============================================================================
@@ -19,41 +18,47 @@
 " ======================[ Global project configuration {{{2
 let s:sources_dir = 'HEAD'
 
+LetIfUndef p:BTW.config.name 'Rasende'
+
 " echomsg "loading: ".expand("<sfile>:p")
 " unlet g:rasende_config
 " Mandatory Project options
-call lh#let#if_undef('g:rasende_config.paths.trunk', string(expand("<sfile>:p:h")))
-LetIfUndef g:rasende_config.paths.project    fnamemodify(g:rasende_config.paths.trunk,':h')
-LetIfUndef g:rasende_config.paths.doxyfile   g:rasende_config.paths.project
-LetIfUndef g:rasende_config.build.Debug      'build-d'
-LetIfUndef g:rasende_config.build.Release    'build-r'
+" LetIfUndef p:paths.project    = fnamemodify(lh#option#get('paths.sources'), ':p:h:h')
+" LetIfUndef p:paths.build_root_dir = 'build'
 
-" Here, this matches all the trunk => complete even with test files
-LetIfUndef g:rasende_config.paths.sources    g:rasende_config.paths.project.'/src'
+if exists(':Module')
+    Module load gcc/8.2.0
+    if v:shell_error == 0
+        LetIfUndef p:BTW.build.mode.bootstrap[gcc8.2] = '-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -DNDEBUG -march=native"'
+        LetIfUndef p:BTW.build.mode.current = 'gcc8.2'
+    endif
+    Module load intel/parallel_studio_xe_2018u3
+    if v:shell_error == 0
+        LetIfUndef p:BTW.build.mode.bootstrap.sanitize = '-DCMAKE_BUILD_TYPE=Release -DCMAKE_CC_COMPILER=icc -DCMAKE_CXX_COMPILER=icpc -DCMAKE_CXX_FLAGS_RELEASE="-O3 -DNDEBUG -xHOST"'
+    endif
+    Module load llvm
+    if v:shell_error == 0
+        LetIfUndef p:BTW.build.mode.bootstrap.intel = '-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CC_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS_RELEASE="-O2 -DNDEBUG -march=native -g -fno-omit-frame-pointer -fsanitize=address,undefined"'
+    endif
+
+else
+    LetIfUndef p:BTW.build.mode.current = 'release'
+    LetIfUndef p:BTW.build.mode.bootstrap.release = '-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -DNDEBUG -march=native"'
+    if executable('clang++')
+        LetIfUndef p:BTW.build.mode.bootstrap.sanitize = '-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS_RELEASE="-O2 -DNDEBUG -march=native -g -fno-omit-frame-pointer -fsanitize=address,undefined"'
+    endif
+
+endif
+
 " Optional Project options
-LetIfUndef g:rasende_config.compilation.mode 'Debug'
-LetIfUndef g:rasende_config.tests.verbosity '-VV'
+LetTo p:BTW.executable.type 'ctest'
+LetIfUndef p:BTW.tests.verbosity '-VV'
+
+call lh#btw#chain#load_config()
 
 " ======================[ Menus {{{2
 let s:menu_priority = '50.120.'
 let s:menu_name     = '&Project.&Rasende Roboter.'
-
-" Function: s:getSNR([func_name]) {{{3
-function! s:getSNR(...)
-  if !exists("s:SNR")
-    let s:SNR=matchstr(expand('<sfile>'), '<SNR>\d\+_\zegetSNR$')
-  endif
-  return s:SNR . (a:0>0 ? (a:1) : '')
-endfunction
-
-" Function: s:EditLocalCMakeFile() {{{3
-function! s:EditLocalCMakeFile()
-  let file = lh#path#to_relative(expand('%:p:h').'/CMakeLists.txt')
-  call lh#buffer#jump(file, 'sp')
-endfunction
-
-call lh#let#if_undef ('g:sea_config.functions',
-      \ string({'EditLocalCMakeFile': function(s:getSNR('EditLocalCMakeFile'))}))
 
 "------------------------------------------------------------------------
 " Compilation mode, & CTest options {{{3
@@ -61,29 +66,24 @@ let g:rasende_config_menu = {
       \ '_project': 'rasende_config',
       \ 'menu': {'priority': s:menu_priority, 'name': s:menu_name}
       \ }
-call lh#btw#cmake#def_options(g:rasende_config_menu, [
-      \ 'def_toggable_compil_mode'
+call lh#let#if_undef('p:menu', g:rasende_config_menu)
+
+call lh#btw#cmake#define_options([
+      \ 'auto_detect_compil_modes'
       \ ])
       " \ 'def_toggable_ctest_verbosity',
       " \ 'def_toggable_ctest_checkmem',
       " \ 'def_ctest_targets',
       " \ 'update_list'])
 
+LetIfUndef p:paths.doxyfile   = lh#option#get('paths.project')
+
 " ======================[ Local variables to automagically import in QuickFix buffer {{{2
-QFImport b:tags_select
-QFImport &l:path
-QFImport b:BTW_project_target
-QFImport b:BTW_compilation_dir
-QFImport b:BTW_project_build_mode
-
-" ======================[ Misc function {{{2
-" Function: BTW_AddPathIfExists(listname, path) {{{3
-function! BTW_AddPathIfExists(listname, path)
-    let path = substitute(a:path, '[/\\]\*\*$', '', '')
-    if isdirectory(path)
-        let {a:listname} += [a:path]
-    endif
-endfunction
-
+""QFImport b:tags_select
+""QFImport &l:path
+""QFImport b:BTW_project_target
+""QFImport b:BTW_compilation_dir
+""QFImport b:BTW_project_build_mode
+" }}}1
 "=============================================================================
 " vim600: set fdm=marker:
